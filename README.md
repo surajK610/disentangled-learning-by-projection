@@ -42,4 +42,6 @@ python baseline_experiments.py --baseline-classification --baseline-autoencoder
 python disentangled_learning_experiments.py
 ```
 
-## Note: Most of the figures in the paper were generated from the `colored-mnist-experiments.ipynb` notebook
+Note: Most of the figures in the paper were generated from the `colored-mnist-experiments.ipynb` notebook
+
+For more, information, please read our [paper](https://github.com/surajK610/disentangled-learning-by-projection/blob/main/Disentangling_Causal_Mechanisms_By_Obstructing_Classifiers.pdf)
