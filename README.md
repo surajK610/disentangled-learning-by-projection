@@ -38,6 +38,8 @@ Though the file structures are a little bit different, `run_inlp.py` and `run_wt
 
 Runs the baseline and disentangled experiments. 
 ```bash
-python baseline_experiments.py
+python baseline_experiments.py --baseline-classification --baseline-autoencoder
 python disentangled_learning_experiments.py
 ```
+
+## Note: Most of the figures in the paper were generated from the `colored-mnist-experiments.ipynb` notebook

@@ -97,7 +97,7 @@ def baseline_autoencoder(FLAGS, train_loader, valid_loader, test_loader, test_da
       print('\n EPOCH {}/{} \t train loss {:.3f} \t val loss {:.3f}'.format(epoch + 1, num_epochs,train_loss,val_loss))
       history['train_loss'].append(train_loss)
       history['val_loss'].append(val_loss)
-      plot_ae_outputs(encoder,decoder,test_dataset, device, idx=epoch, n=5, fig_path='outputs/autoencoder/training_images')
+      plot_ae_outputs(encoder,decoder,test_dataset, device, idx=epoch, n=5, fig_path='outputs/autoencoder/training_figures')
   
   test_error = test_epoch(encoder,decoder,device,test_loader,loss_fn).item()
   print(f'Test error: {test_error}')
@@ -120,9 +120,9 @@ def baseline_autoencoder(FLAGS, train_loader, valid_loader, test_loader, test_da
 
 
 def main(FLAGS):
-  test_dataset = ColoredMNIST()
+  test_dataset = ColoredMNIST() ## this is only used for visualizing does not matter that includes everything
   train_loader, valid_loader, test_loader = get_data_loaders(batch_size=FLAGS.batch_size)
-  print(FLAGS.baseline_classification)
+
   if FLAGS.baseline_classification:
     baseline_classification(FLAGS, train_loader, valid_loader)
   if FLAGS.baseline_autoencoder:
@@ -133,8 +133,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(
                 prog='Baseline Experiments',
                 description='trains autoencoder for Colored MNIST and assess classification performance as well as generates some figures')
-    parser.add_argument("--baseline-classification", default=False, type=bool, help="run baseline classification experiment")
-    parser.add_argument("--baseline-autoencoder", default=False, type=bool, help="run baseline autoencoder experiment")
+    parser.add_argument("--baseline-classification", action="store_true", help="run baseline classification experiment")
+    parser.add_argument("--baseline-autoencoder", action="store_true", help="run baseline autoencoder experiment")
 
     parser.add_argument("--batch-size", default=64, type=int, help="batch size")
     parser.add_argument("--device", default="cuda:0", type=str, help="device to run on")
