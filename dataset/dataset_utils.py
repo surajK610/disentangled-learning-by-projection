@@ -84,7 +84,7 @@ def plot_dataset_digits(dataset):
 
 def get_data_loaders(batch_size=64):
   dataset = ColoredMNIST()
-  plot_dataset_digits(dataset)
+  # plot_dataset_digits(dataset)
 
   train_dataset, validation_dataset, test_dataset = random_split(dataset, [0.8, 0.10, 0.10])
 
@@ -102,6 +102,8 @@ def main():
 
   dataset = torchvision.datasets.MNIST('./data/mnist', download=True, transform=preprocess)
   colored_dataset = randomly_convert_colors(dataset)
+
+  os.makedirs('./data/colored_mnist', exist_ok=True)
   torch.save(colored_dataset, './data/colored_mnist/data_tuples.pt')
 
 

@@ -2,7 +2,7 @@ import torch.nn as nn
 import torch
 import numpy as np
 import matplotlib.pyplot as plt
-from dataset.dataset_utils import get_data_loaders, ColoredMNIST
+import os 
 
 class Encoder(nn.Module):
     
@@ -114,7 +114,7 @@ def test_epoch(encoder, decoder, device, dataloader, loss_fn):
         val_loss = loss_fn(conc_out, conc_label)
     return val_loss.data
 
-def plot_ae_outputs(encoder,decoder, test_dataset, device, n=5):
+def plot_ae_outputs(encoder,decoder, test_dataset, device, idx, n=5, fig_path='outputs/ae_outputs'):
     plt.figure(figsize=(10,4.5))
     for i in range(n):
         ax = plt.subplot(2,n,i+1)
@@ -137,10 +137,10 @@ def plot_ae_outputs(encoder,decoder, test_dataset, device, n=5):
         
         if i == n//2:
             ax.set_title('Reconstructed images')
-    plt.show()   
+    plt.savefig(os.path.join(fig_path, f'reconstructed_{idx}.png'))
 
 def linearly_interpolate(decoder, device, point1, point2, point3, point4,
-                          n=5, fig_path='outputs/interpolation.png'):
+                        n=5, fig_path='outputs/interpolation.png'):
     plt.figure(figsize=(8,8))
     
     def subprocess(a, b, idx_fun):
@@ -161,7 +161,7 @@ def linearly_interpolate(decoder, device, point1, point2, point3, point4,
     plt.savefig(fig_path)
     
 def linearly_interpolate_test_idxs(encoder, decoder, test_dataset, device, i1, i2, i3, i4, 
-                                  n=5, fig_path='outputs/interpolation.png'):
+                                n=5, fig_path='outputs/interpolation.png'):
     img1 = torch.from_numpy(test_dataset[i1][0]).unsqueeze(0).to(device)
     encoded1 = encoder(img1)
     img2 = torch.from_numpy(test_dataset[i2][0]).unsqueeze(0).to(device)
@@ -171,63 +171,3 @@ def linearly_interpolate_test_idxs(encoder, decoder, test_dataset, device, i1, i
     img4 = torch.from_numpy(test_dataset[i4][0]).unsqueeze(0).to(device)
     encoded4 = encoder(img4)
     linearly_interpolate(decoder, device, encoded1, encoded2, encoded3, encoded4, n=n, fig_path=fig_path)
-
-
-def main(d):
-
-  test_dataset = ColoredMNIST()
-  train_loader, valid_loader, test_loader = get_data_loaders(batch_size=64)
-
-  encoder = Encoder(encoded_space_dim=d)
-  decoder = Decoder(encoded_space_dim=d)
-  loss_fn = torch.nn.MSELoss()
-  lr= 0.001
-
-  params_to_optimize = [
-      {'params': encoder.parameters()},
-      {'params': decoder.parameters()},
-  ]
-
-  optim = torch.optim.Adam(params_to_optimize, lr=lr, weight_decay=1e-05)
-
-  device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
-  print(f'Selected device: {device}')
-
-  encoder.to(device)
-  decoder.to(device)
-
-  num_epochs = 100
-  history={'train_loss':[],'val_loss':[]}
-
-
-
-  for epoch in range(num_epochs):
-    train_loss = train_epoch(encoder,decoder,device,train_loader,loss_fn,optim)
-    val_loss = test_epoch(encoder,decoder,device,valid_loader,loss_fn)
-    print('\n EPOCH {}/{} \t train loss {:.3f} \t val loss {:.3f}'.format(epoch + 1, num_epochs,train_loss,val_loss))
-    history['train_loss'].append(train_loss)
-    history['val_loss'].append(val_loss)
-    plot_ae_outputs(encoder,decoder,test_dataset, device, n=5)
-  
-  test_error = test_epoch(encoder,decoder,device,test_loader,loss_fn).item()
-  print(f'Test error: {test_error}')
-
-  torch.save(encoder.state_dict(), f'outputs/classifiers/encoder_d={d}.pt')
-  torch.save(decoder.state_dict(), f'outputs/classifiers/decoder_d={d}.pt')
-
-  plt.figure(figsize=(10,8))
-  plt.plot(history['train_loss'], label='Train Loss')
-  plt.plot(history['val_loss'], label='Validation Loss')
-  plt.xlabel('Epoch')
-  plt.ylabel('Average Loss')
-  #plt.grid()
-  plt.legend()
-  plt.title(f'Loss Curves Autoencoder d={d}')
-  plt.savefig(f'outputs/loss_curves_autoencoder_d={d}.png')
-
-  linearly_interpolate_test_idxs(decoder, 1, 15, 2, 14)
-
-
-if __name__ == '__main__':
-    d = 4
-    main(d)
