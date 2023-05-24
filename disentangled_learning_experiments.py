@@ -56,7 +56,7 @@ def main(FLAGS):
         'number_dimensions' : {'number_accuracy': val_acc_num_proj1, 'color_accuracy': val_acc_col_proj1},
         'color_dimensions': {'number_accuracy': val_acc_num_proj2, 'color_accuracy': val_acc_col_proj2},
     }
-    json.dump(results, open(f'outputs/disentangled_autoencoder/results_dim_{d}.json', 'w'),  indent = 6)
+    json.dump(results, open(f'outputs/disentangled_autoencoder/results_dim_{d}.json', 'w'), indent = 6)
 
 
 if __name__ == '__main__':

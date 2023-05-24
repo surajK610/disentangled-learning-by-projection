@@ -44,4 +44,4 @@ python disentangled_learning_experiments.py
 
 Note: Most of the figures in the paper were generated from the `colored-mnist-experiments.ipynb` notebook
 
-For more, information, please read our [paper](https://github.com/surajK610/disentangled-learning-by-projection/blob/main/Disentangling_Causal_Mechanisms_By_Obstructing_Classifiers.pdf)
+For more, information, please read our [paper](https://github.com/surajK610/disentangled-learning-by-projection/blob/main/Disentangling_Causal_Mechanisms_By_Obstructing_Classifiers.pdf). This project was in the top 10% of projections in Brown's *Algorithmic Aspects of Machine Learning* Class, which can be seen [here]().
