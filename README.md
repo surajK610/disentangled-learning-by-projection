@@ -23,18 +23,18 @@ python dataset/dataset_utils.py
 
 ## 3. Module Summary
 
-*Dataset*
+*Dataset*:
 `dataset/dataset_utils.py` provides useful utilities to (1) create our dataset, (2) load our dataset, and (3) run the train/validation/test split.
 
-*Models*
+*Models*:
 `models/` stores our models. Within this folder, we have a convolutional classifier, a logistic classifier (i.e. one-layered sigmoid head), a convolutional autoencoder, and a convolutional autoencoder with projection built in.
 
-*Models/Interventions*
+*Models/Interventions*:
 `models/interventions/` holds our interventions on models. Specifically, we have `rlace.py` which linearly projects a rank-k dimension subspace and we have `counterfactual.py` which uses gradient descent on the activations to produce a counterfactual (similar to adversarial techniques, but works in the latent space).
 Though the file structures are a little bit different, `run_inlp.py` and `run_wtmt.py` run the given interventions (over each concept) and test the subsequent models (over each concept).
 
 
-# 4. Run code 
+## 4. Run code 
 
 Runs the baseline and disentangled experiments. 
 ```bash
