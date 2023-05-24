@@ -1,0 +1,9 @@
+# Byte-compiled / optimized / DLL files
+*pycache*/
+__pycache__/
+*.py[cod]
+
+# Environment and Generated Files
+data/
+env/
+outputs/
