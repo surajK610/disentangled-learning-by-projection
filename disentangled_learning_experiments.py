@@ -34,8 +34,8 @@ def main(FLAGS):
     _, _, val_acc_col =lc_col.fit(train_loader, valid_loader, output['encoder'], label='color', epochs=10)
 
     #encoder_with_projection_d = lambda batch: encoder_with_projection(batch, dim=dim)
-    encoder_proj1_d = lambda batch: encoder_proj1(batch, dim=d)
-    encoder_proj2_d = lambda batch: encoder_proj2(batch, dim=d)
+    encoder_proj1_d = lambda batch: encoder_proj1(output, FLAGS.device, batch, dim=d)
+    encoder_proj2_d = lambda batch: encoder_proj2(output, FLAGS.device, batch, dim=d)
 
     lc_num_proj1 = LogisticClassifier(int(d/2), NUM_CLASSES_NUMBER, lr=0.001, device=FLAGS.device)
     _, _, val_acc_num_proj1 = lc_num_proj1.fit(train_loader, valid_loader, encoder_proj1_d, 
